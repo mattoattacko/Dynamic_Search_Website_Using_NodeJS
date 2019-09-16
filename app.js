@@ -3,6 +3,32 @@
 // Solution: Use Node.js to perform the profile look ups and serve our template via http
 
 // 1. Create a web server
+// var http = require('http');
+// http.createServer(function (request, response) {
+//     response.writeHead(200, {'Content-Type': 'text/plain'});
+//     response.write('This is before the end\n');
+//     response.end('hello world\n');
+//     response.write('This is after the end\n');
+// }).listen(3000); //or 1337?
+// console.log('Server running at http://<workspace-url>/');
+
+const http = require('http');
+
+const hostname = '127.0.0.1';
+const port = 3000;
+
+const server = http.createServer((request, response) => {
+    response.statusCode = 200;
+    response.setHeader('Content-Type', 'text/plain');
+    setInterval(function(){
+        response.write(new Date() + "\n");
+    }, 1000);
+    // ressponse.end('Hello World\n');
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
 
 
 
