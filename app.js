@@ -18,33 +18,33 @@ const hostname = '127.0.0.1';
 const port = 3000;
 
 const server = http.createServer((request, response) => {
-    response.statusCode = 200;
-    response.setHeader('Content-Type', 'text/plain');
-    setInterval(function(){
-        response.write(new Date() + "\n");
-    }, 1000);
-    // ressponse.end('Hello World\n');
-});
+    homeRoute(request, response);
+}).listen(3000);
 
 server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-
-
 // 2. Handle HTTP route GET / and POST / eg: Home 
+function homeRoute(request, response) {
     // if url == "/" && GET
-        // show search field 
+    if(request.url === "/") {
+        // show search field
+        response.writeHead(200, {'Content-Type' : 'text/plain'});
+        response.write("Header\n");
+        response.write("Search\n");
+        response.end("Footer\n");
+        // response.setHeader('Content-Type', 'text/plain');
     // if url == "/" && POST
         // redirect to /:username
-
-
+    }
+}
 
 // 3. Handle HTTP route GET /:username eg: /mattoattacko
     // if url == "/..." (anything)
         // get json from Treehouse
             // on "end"
-                // show profile
+                // show profile 
             // on "error"
                 // show error
 
