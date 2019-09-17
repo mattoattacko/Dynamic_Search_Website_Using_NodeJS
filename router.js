@@ -1,28 +1,43 @@
 var Profile = require('./profile.js');
 var renderer = require('./renderer.js');
+var queryString = require('querystring');
+var commonHeaders = {'Content-Type' : 'text/html'};
 
 // Handle HTTP route GET / and POST / eg: Home 
 function home(request, response) {
     // if url == "/" && GET
     if(request.url === "/") {
-        // show search field
-        response.writeHead(200, {'Content-Type' : 'text/plain'});
-        renderer.view("header", {}, response);
-        renderer.view("search", {}, response);
-        renderer.view("footer", {}, response);
-        response.end();
+        if(request.method.toLowerCase() === "get") {
+            // show search field
+            response.writeHead(200, commonHeaders);
+            renderer.view("header", {}, response);
+            renderer.view("search", {}, response);
+            renderer.view("footer", {}, response);
+            response.end();
+        } else {
+            // if url == "/" && POST
+
+            // get the post data from body
+            request.on('data', function(postBody) {
+                // extract the username
+                var query = queryString.parse(postBody.toString());
+                // Location is probably where we add the treehouse api url
+                // redirect to /:username
+                response.writeHead(303, {"Location": '/' + query.username});
+                response.end();
+            });
+        }
         // response.setHeader('Content-Type', 'text/plain');
-    // if url == "/" && POST
-        // redirect to /:username
+    
     }
 }
 
-// Handle HTTP route GET /:username eg: /mattoattacko
+// Handle HTTP route GET /:username eg: /matthewmcquain
 function user(request, response) {
     // if url == "/..." (anything)
     var userName = request.url.replace("/", "");
     if(userName.length > 0) {
-        response.writeHead(200, {'Content-Type' : 'text/plain'});
+        response.writeHead(200, commonHeaders);
         renderer.view("header", {}, response);
 
         // get json from Treehouse
